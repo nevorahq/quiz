@@ -1,0 +1,166 @@
+{
+  "intro": {
+    "badge": "Quiz de 2 minute",
+    "title": "Cât de organizat ești, de fapt?",
+    "subtitle": "Descoperă unde îți scapă banii, termenele și sarcinile din gospodărie.",
+    "cta": "Începe quizul",
+    "privacy": "2 minute · Anonim · Fără cont"
+  },
+
+  "progress": {
+    "question": "Întrebarea",
+    "of": "din"
+  },
+
+  "blocks": {
+    "A": { "title": "Bani & Abonamente" },
+    "B": { "title": "Termene importante" },
+    "C": { "title": "Familie & Instrumente" }
+  },
+
+  "q1": {
+    "question": "Câte abonamente digitale active ai în prezent?",
+    "a": "1–3",
+    "b": "4–7",
+    "c": "8–15",
+    "d": "15 sau mai multe"
+  },
+
+  "q2": {
+    "question": "Cât de des descoperi un cost la care nu te-ai așteptat?",
+    "a": "Niciodată",
+    "b": "O dată sau de două ori pe an",
+    "c": "La câteva luni",
+    "d": "Lunar sau mai des"
+  },
+
+  "q3": {
+    "question": "Cât de clar știi cât cheltuiești lunar pe abonamente?",
+    "scale_low": "Nicio idee",
+    "scale_high": "Știu exact",
+    "1": "Nicio idee",
+    "2": "Bănuiesc vag",
+    "3": "Aproximativ",
+    "4": "Destul de bine",
+    "5": "Știu exact"
+  },
+
+  "q4": {
+    "question": "Ce se întâmplă de obicei cu abonamentele pe care nu le mai folosești?",
+    "a": "Le anulez imediat",
+    "b": "Le anulez după ce observ tranzacția",
+    "c": "Rămân active luni de zile",
+    "d": "Nu sunt sigur — unele s-ar putea să meargă în continuare"
+  },
+
+  "q5": {
+    "question": "Cum urmărești termenele anuale importante — asigurări, taxe, documente?",
+    "a": "Am un sistem de remindere de încredere",
+    "b": "Folosesc calendarul sau alertele din email",
+    "c": "Mă bazez pe memorie",
+    "d": "De multe ori aflu că e prea târziu"
+  },
+
+  "q6": {
+    "question": "Cât de des ai sentimentul că probabil îți scapă ceva important?",
+    "scale_low": "Niciodată",
+    "scale_high": "Mereu",
+    "1": "Niciodată",
+    "2": "Rar",
+    "3": "Uneori",
+    "4": "Adesea",
+    "5": "Mereu"
+  },
+
+  "q7": {
+    "question": "Cât timp ți-ar lua să găsești exact cât plătești pe lună pe abonamente?",
+    "a": "Știu pe loc, fără să caut",
+    "b": "Câteva minute",
+    "c": "10–30 de minute de căutat",
+    "d": "Sincer, nu știu cum aș face asta"
+  },
+
+  "q8": {
+    "question": "Ți s-a întâmplat să ratezi o plată, o reînnoire sau un termen important?",
+    "a": "Nu, niciodată",
+    "b": "O dată sau de două ori",
+    "c": "De câteva ori pe an",
+    "d": "Regulat"
+  },
+
+  "q9": {
+    "question": "Cine se ocupă de finanțe și planificare în gospodăria ta?",
+    "a": "Avem un sistem comun bine pus la punct",
+    "b": "O singură persoană se ocupă de tot",
+    "c": "Fiecare se descurcă pe cont propriu, vag",
+    "d": "Nu prea există coordonare"
+  },
+
+  "q10": {
+    "question": "Cât ești de mulțumit de felul în care gestionezi acum finanțele și obligațiile?",
+    "scale_low": "Deloc mulțumit",
+    "scale_high": "Foarte mulțumit",
+    "1": "Deloc mulțumit",
+    "2": "Slab",
+    "3": "Acceptabil",
+    "4": "Bine",
+    "5": "Foarte mulțumit"
+  },
+
+  "q11": {
+    "question": "Unde se află acum reminderele tale financiare și termenele importante?",
+    "a": "Într-un singur loc organizat",
+    "b": "Împărțite între 2–3 instrumente",
+    "c": "Împrăștiate peste tot",
+    "d": "În capul meu, sau nicăieri"
+  },
+
+  "q12": {
+    "question": "Ce din lista de mai jos ți s-a întâmplat în ultimul an? Bifează tot ce se aplică.",
+    "a": "Am plătit un abonament pe care nu-l mai foloseam",
+    "b": "Am ratat reînnoirea unei asigurări sau unui document",
+    "c": "Am descoperit un cost neașteptat pe extras",
+    "d": "Am avut un conflict cu partenerul din cauza unei cheltuieli neprevăzute",
+    "e": "Nu am găsit informații despre o plată sau un termen când aveam nevoie"
+  },
+
+  "navigation": {
+    "next": "Următor",
+    "back": "Înapoi",
+    "finish": "Vezi rezultatele mele"
+  },
+
+  "result": {
+    "calculating": "Se calculează rezultatele…",
+    "your_score": "Scorul tău de haos financiar",
+    "profiles": {
+      "under_control": "Sub control",
+      "managed_chaos": "Haos gestionat",
+      "losing_track": "Pierzi firul",
+      "full_chaos": "Haos total"
+    },
+    "insights_title": "Unde apar problemele",
+    "waitlist_title": "Vrei să rezolvi asta?",
+    "waitlist_subtitle": "Construim un instrument care îți oferă o imagine clară a tot ce plătești, a fiecărui termen care se apropie și a tot ce trebuie urmărit în gospodărie.",
+    "email_placeholder": "adresa@ta.com",
+    "waitlist_cta": "Vreau acces timpuriu",
+    "waitlist_note": "Fără spam. Te contactăm când suntem pregătiți.",
+    "success_title": "Ești pe listă!",
+    "success_subtitle": "Îți scriem imediat ce deschidem accesul timpuriu.",
+    "profile_descriptions": {
+      "under_control": "Abonamentele și termenele tale sunt sub control.",
+      "managed_chaos": "Te descurci, dar apar fisuri pe ici, pe colo.",
+      "losing_track": "Lucruri importante îți scapă — merită să te organizezi.",
+      "full_chaos": "Lucrurile au scăpat de sub control — un sistem ar face o diferență reală."
+    }
+  },
+
+  "insights": {
+    "subscriptions_unknown": "Probabil plătești pentru servicii uitate — un audit rapid al abonamentelor ți-ar putea aduce bani înapoi chiar luna aceasta.",
+    "subscriptions_week": "Costurile neașteptate apar des în cazul tău — să vezi toate plățile recurente într-un singur loc ar schimba situația.",
+    "deadlines_head": "Te bazezi pe memorie pentru lucruri pe care un sistem le-ar gestiona mult mai bine — un termen ratat poate costa mai mult decât un an de abonamente.",
+    "deadlines_regular": "Să reconstituiești imaginea ta financiară necesită efort real — această fricțiune înseamnă că lucruri importante îți scapă.",
+    "tools_chaos": "Reminderele tale sunt împrăștiate în instrumente care nu comunică între ele — consolidarea lor ți-ar putea economisi ore în fiecare lună.",
+    "tools_many": "Gestionarea banilor fără un sistem comun creează zone oarbe — mai ales atunci când responsabilitățile sunt împărțite vag."
+  }
+}

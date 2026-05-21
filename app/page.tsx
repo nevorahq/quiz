@@ -1,5 +1,5 @@
-import QuizContainer from './components/QuizContainer'
+import { redirect } from 'next/navigation'
 
-export default function page() {
-  return <QuizContainer />
+export default function RootPage() {
+  redirect('/en')
 }

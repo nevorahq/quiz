@@ -1,0 +1,166 @@
+{
+  "intro": {
+    "badge": "2-minute quiz",
+    "title": "How in control are you, really?",
+    "subtitle": "Find out where your subscriptions, deadlines, and household finances are slipping through the cracks.",
+    "cta": "Start the quiz",
+    "privacy": "Takes 2 minutes · Anonymous · No sign-up required"
+  },
+
+  "progress": {
+    "question": "Question",
+    "of": "of"
+  },
+
+  "blocks": {
+    "A": { "title": "Money & Subscriptions" },
+    "B": { "title": "Life Deadlines" },
+    "C": { "title": "Family & Tools" }
+  },
+
+  "q1": {
+    "question": "How many active digital subscriptions do you currently have?",
+    "a": "1–3",
+    "b": "4–7",
+    "c": "8–15",
+    "d": "15 or more"
+  },
+
+  "q2": {
+    "question": "How often do you discover a charge you didn't expect?",
+    "a": "Never",
+    "b": "Once or twice a year",
+    "c": "Every few months",
+    "d": "Monthly or more"
+  },
+
+  "q3": {
+    "question": "How clearly do you know your total monthly subscription spend?",
+    "scale_low": "No idea",
+    "scale_high": "Exact to the cent",
+    "1": "No idea",
+    "2": "Vague guess",
+    "3": "Roughly",
+    "4": "Pretty well",
+    "5": "Exact to the cent"
+  },
+
+  "q4": {
+    "question": "What usually happens to subscriptions you stop using?",
+    "a": "I cancel immediately",
+    "b": "I cancel after noticing the charge",
+    "c": "They linger for months before I act",
+    "d": "I'm not sure — some may still be running"
+  },
+
+  "q5": {
+    "question": "How do you track important annual deadlines — insurance renewals, taxes, documents?",
+    "a": "I have a reliable reminder system",
+    "b": "I use calendar or email alerts",
+    "c": "I rely on my memory",
+    "d": "I often find out when it's already too late"
+  },
+
+  "q6": {
+    "question": "How often do you feel like you're probably missing something important?",
+    "scale_low": "Never",
+    "scale_high": "Constantly",
+    "1": "Never",
+    "2": "Rarely",
+    "3": "Sometimes",
+    "4": "Often",
+    "5": "Constantly"
+  },
+
+  "q7": {
+    "question": "How long would it take you to find your exact monthly subscription total right now?",
+    "a": "I know it off the top of my head",
+    "b": "A few minutes",
+    "c": "10–30 minutes of searching",
+    "d": "I honestly couldn't figure it out"
+  },
+
+  "q8": {
+    "question": "Have you ever missed a payment, renewal, or important deadline?",
+    "a": "No, never",
+    "b": "Once or twice",
+    "c": "A few times a year",
+    "d": "Regularly"
+  },
+
+  "q9": {
+    "question": "Who manages finances and planning in your household?",
+    "a": "We have a shared, organised system",
+    "b": "One person handles everything",
+    "c": "We each manage our own, loosely",
+    "d": "It's largely uncoordinated"
+  },
+
+  "q10": {
+    "question": "How satisfied are you with how you currently manage your finances and obligations?",
+    "scale_low": "Terrible",
+    "scale_high": "Perfect",
+    "1": "Terrible",
+    "2": "Poor",
+    "3": "Okay",
+    "4": "Good",
+    "5": "Perfect"
+  },
+
+  "q11": {
+    "question": "Where do your financial reminders and important deadlines currently live?",
+    "a": "In one centralised system",
+    "b": "Spread across 2–3 tools",
+    "c": "Scattered across many places",
+    "d": "In my head, or nowhere"
+  },
+
+  "q12": {
+    "question": "Which of these have happened to you in the past year? Select all that apply.",
+    "a": "Paid for a subscription I no longer used",
+    "b": "Missed an insurance or document renewal",
+    "c": "Had a surprise charge on my statement",
+    "d": "Had a disagreement with a partner over an unexpected expense",
+    "e": "Couldn't find information about a payment or deadline when I needed it"
+  },
+
+  "navigation": {
+    "next": "Next",
+    "back": "Back",
+    "finish": "See my results"
+  },
+
+  "result": {
+    "calculating": "Calculating your results…",
+    "your_score": "Your financial chaos score",
+    "profiles": {
+      "under_control": "Under Control",
+      "managed_chaos": "Managed Chaos",
+      "losing_track": "Losing Track",
+      "full_chaos": "Full Chaos"
+    },
+    "insights_title": "Where the gaps show up",
+    "waitlist_title": "Want to fix this?",
+    "waitlist_subtitle": "We're building a tool that gives you one clear view of everything you're paying for, every deadline coming up, and every task your household needs to stay on top of.",
+    "email_placeholder": "your@email.com",
+    "waitlist_cta": "Get early access",
+    "waitlist_note": "No spam. We'll reach out when we're ready.",
+    "success_title": "You're in!",
+    "success_subtitle": "We'll let you know as soon as early access opens.",
+    "profile_descriptions": {
+      "under_control": "Your subscriptions and deadlines are in good shape.",
+      "managed_chaos": "You're juggling things, but cracks are starting to show.",
+      "losing_track": "Important things are slipping — it's worth getting organised.",
+      "full_chaos": "Things are out of hand — a system would make a real difference."
+    }
+  },
+
+  "insights": {
+    "subscriptions_unknown": "You're likely paying for services you've forgotten about — a quick subscription audit could save you real money this month.",
+    "subscriptions_week": "Surprise charges are a recurring pattern for you — seeing all your recurring payments in one place would change that.",
+    "deadlines_head": "You're relying on memory for things a system should own — one missed renewal can cost more than a whole year of app subscriptions.",
+    "deadlines_regular": "Piecing together your financial picture takes real effort — that friction means important things slip through the gaps.",
+    "tools_chaos": "Your reminders are scattered across tools that don't talk to each other — bringing them together could save you hours every month.",
+    "tools_many": "Managing money without a shared system creates blind spots — especially when household responsibilities are split loosely."
+  }
+}

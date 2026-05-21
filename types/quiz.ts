@@ -1,46 +1,36 @@
 export type Language = 'en' | 'ro' | 'ru'
 
-export type QuestionType = 'open' | 'scale' | 'choice'
+export type QuestionType = 'choice' | 'scale' | 'multi'
 
-/** Screen phase controlling which component is rendered */
-export type Phase = 'intro' | 'block-header' | 'question' | 'results'
+export interface QuestionOption {
+  value: string
+  labelKey: string
+  weight: number
+}
 
 export interface Question {
   id: number
-  block: number
-  blockTitle: string
-  blockGoal: string
-  text: string
+  block: 'A' | 'B' | 'C'
   type: QuestionType
-  options?: string[]
-  placeholder?: string
-  /** For scale questions: label for value 1 */
-  scaleLow?: string
-  /** For scale questions: label for value 5 */
-  scaleHigh?: string
+  questionKey: string
+  options: QuestionOption[]
 }
 
-export interface BlockInfo {
-  block: number
-  title: string
-  goal: string
-}
-
-export interface QuizAnswer {
-  questionId: number
-  value: string
-  timestamp: string
+export type QuizAnswers = {
+  [questionId: string]: string | string[]
 }
 
 export interface QuizState {
-  language: Language
-  phase: Phase
-  /** 1-7, 0 before quiz starts */
-  currentBlock: number
-  /** 0-indexed position in the full question list */
-  currentQuestion: number
-  answers: QuizAnswer[]
-  isCompleted: boolean
+  currentIndex: number
+  answers: QuizAnswers
   startedAt: string | null
-  completedAt: string | null
+  language: string
+}
+
+export type PainProfile = 'under_control' | 'managed_chaos' | 'losing_track' | 'full_chaos'
+
+export interface PainResult {
+  score: number
+  profile: PainProfile
+  insights: string[]
 }
