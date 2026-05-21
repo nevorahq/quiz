@@ -17,16 +17,11 @@ import { z } from 'zod'
 import { createClient } from '@supabase/supabase-js'
 
 const schema = z.object({
-  email: z.string().email(),
+  email: z.email(),
   pain_score: z.number().min(0).max(100),
   profile: z.enum(['under_control', 'managed_chaos', 'losing_track', 'full_chaos']),
   language: z.enum(['en', 'ro', 'ru']),
 })
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
 
 export async function POST(request: Request) {
   let body: unknown
@@ -45,6 +40,11 @@ export async function POST(request: Request) {
   }
 
   const { email, pain_score, profile, language } = result.data
+
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
 
   const { error } = await supabase
     .from('waitlist')
