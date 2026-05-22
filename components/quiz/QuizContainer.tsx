@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback, useRef, useSyncExternalStore } from 'react'
 import { usePostHog } from 'posthog-js/react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { QuizAnswers, PainResult, PainProfile } from '@/types/quiz'
+import { QuizAnswers, PainResult, PainProfile, UtmParams, QuizSubmitPayload } from '@/types/quiz'
 import { questions } from '@/lib/questions'
 import { calculatePainScore } from '@/lib/scoring'
 import { getQuizMessages, t } from '@/lib/getQuizMessages'
@@ -26,6 +26,20 @@ interface QuizContainerProps {
 // ---------------------------------------------------------------------------
 
 const STORAGE_KEY = 'nevora-quiz-v2'
+
+function restoreFromStorage(): { currentIndex: number; answers: QuizAnswers } | null {
+  if (typeof window === 'undefined') return null
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY)
+    if (saved) {
+      const parsed = JSON.parse(saved) as { currentIndex: number; answers: QuizAnswers }
+      if (typeof parsed.currentIndex === 'number' && parsed.answers && typeof parsed.answers === 'object') {
+        return parsed
+      }
+    }
+  } catch { /**/ }
+  return null
+}
 const TOTAL = questions.length // 12
 
 /** 0-based indices where a block ends (q4=3, q8=7, q12=11) */
@@ -62,9 +76,10 @@ interface ResultViewProps {
   locale: string
   onEmailSubmit: (e: React.SubmitEvent, email: string) => Promise<void>
   submitting: boolean
+  submitError: string | null
 }
 
-function ResultView({ result, locale, onEmailSubmit, submitting }: ResultViewProps) {
+function ResultView({ result, locale, onEmailSubmit, submitting, submitError }: ResultViewProps) {
   const msg = getQuizMessages(locale)
   const [email, setEmail] = useState('')
   const color = PROFILE_COLOR[result.profile]
@@ -181,6 +196,14 @@ function ResultView({ result, locale, onEmailSubmit, submitting }: ResultViewPro
             >
               {submitting ? '…' : msg.result.waitlist_cta}
             </button>
+            {submitError && (
+              <p
+                className="text-center text-xs"
+                style={{ color: '#F87171', fontFamily: 'var(--font-body)' }}
+              >
+                {submitError}
+              </p>
+            )}
           </form>
           <p
             className="text-center text-xs"
@@ -242,12 +265,13 @@ function DoneView({ locale }: { locale: string }) {
 
 export default function QuizContainer({ locale }: QuizContainerProps) {
   const [phase, setPhase] = useState<Phase>('quiz')
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [answers, setAnswers] = useState<QuizAnswers>({})
+  const [currentIndex, setCurrentIndex] = useState(() => restoreFromStorage()?.currentIndex ?? 0)
+  const [answers, setAnswers] = useState<QuizAnswers>(() => restoreFromStorage()?.answers ?? {})
   const [direction, setDirection] = useState<'forward' | 'backward'>('forward')
   const [result, setResult] = useState<PainResult | null>(null)
   const [submitting, setSubmitting] = useState(false)
-  const [isHydrated, setIsHydrated] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
+  const isHydrated = useSyncExternalStore(() => () => {}, () => true, () => false)
 
   const ph = usePostHog()
   const msg = getQuizMessages(locale)
@@ -255,6 +279,7 @@ export default function QuizContainer({ locale }: QuizContainerProps) {
   // Refs keep latest values accessible in event handlers / timeouts
   const phaseRef = useRef<Phase>('quiz')
   const indexRef = useRef(0)
+  const utmRef = useRef<UtmParams>({})
   useEffect(() => { phaseRef.current = phase }, [phase])
   useEffect(() => { indexRef.current = currentIndex }, [currentIndex])
 
@@ -265,24 +290,16 @@ export default function QuizContainer({ locale }: QuizContainerProps) {
     (Array.isArray(rawAnswer) ? rawAnswer.length > 0 : rawAnswer !== '')
   const isLast = currentIndex === TOTAL - 1
 
-  // ── Hydration + state restore ──────────────────────────────────────────
+  // ── quiz_started + UTM capture ─────────────────────────────────────────
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY)
-      if (saved) {
-        const { currentIndex: ci, answers: a } = JSON.parse(saved) as {
-          currentIndex: number
-          answers: QuizAnswers
-        }
-        if (typeof ci === 'number' && a && typeof a === 'object') {
-          setCurrentIndex(ci)
-          setAnswers(a)
-        }
-      }
-    } catch {
-      // ignore corrupt data
+    const params = new URLSearchParams(window.location.search)
+    utmRef.current = {
+      utm_source:   params.get('utm_source')   ?? undefined,
+      utm_medium:   params.get('utm_medium')   ?? undefined,
+      utm_campaign: params.get('utm_campaign') ?? undefined,
+      utm_content:  params.get('utm_content')  ?? undefined,
+      utm_term:     params.get('utm_term')     ?? undefined,
     }
-    setIsHydrated(true)
     ph?.capture('quiz_started', { locale })
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -361,31 +378,61 @@ export default function QuizContainer({ locale }: QuizContainerProps) {
     setCurrentIndex((i) => i - 1)
   }, [currentIndex])
 
-  // ── Waitlist submit ────────────────────────────────────────────────────
+  // ── Quiz submit ────────────────────────────────────────────────────────
   const handleEmailSubmit = useCallback(
     async (e: React.SubmitEvent, email: string) => {
       e.preventDefault()
       if (!email.trim() || submitting || !result) return
       setSubmitting(true)
+      setSubmitError(null)
+
+      const payload: QuizSubmitPayload = {
+        email: email.trim(),
+        answers,
+        answers_count: Object.keys(answers).length,
+        score: result.score,
+        profile: result.profile,
+        insights: result.insights,
+        language: locale,
+        pathname: window.location.pathname,
+        timestamp: new Date().toISOString(),
+        ...utmRef.current,
+      }
+
+      console.log('[quiz/submit] payload', payload)
+
       try {
-        const res = await fetch('/api/waitlist', {
+        const res = await fetch('/api/quiz/submit', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: email.trim(),
-            pain_score: result.score,
-            profile: result.profile,
-            language: locale,
-          }),
+          body: JSON.stringify(payload),
         })
+
         if (res.ok) {
-          ph?.capture('waitlist_joined', { locale, profile: result.profile, score: result.score })
+          ph?.capture('quiz_submitted', {
+            answers: payload.answers,
+            answers_count: payload.answers_count,
+            score: payload.score,
+            profile: payload.profile,
+            insights: payload.insights,
+            language: payload.language,
+            pathname: payload.pathname,
+            timestamp: payload.timestamp,
+            ...utmRef.current,
+          })
+          setSubmitting(false)
+          setPhase('done')
+        } else {
+          const json = await res.json().catch(() => ({}))
+          setSubmitError((json as { error?: string }).error ?? 'Something went wrong. Please try again.')
+          setSubmitting(false)
         }
-      } catch { /**/ }
-      setSubmitting(false)
-      setPhase('done')
+      } catch {
+        setSubmitError('Network error. Please check your connection and try again.')
+        setSubmitting(false)
+      }
     },
-    [submitting, result, locale, ph],
+    [submitting, result, answers, locale, ph],
   )
 
   // ── Loading skeleton ───────────────────────────────────────────────────
@@ -409,6 +456,7 @@ export default function QuizContainer({ locale }: QuizContainerProps) {
         locale={locale}
         onEmailSubmit={handleEmailSubmit}
         submitting={submitting}
+        submitError={submitError}
       />
     )
   }
