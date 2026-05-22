@@ -11,7 +11,6 @@ export default async function QuizPage({ params }: Props) {
     <div className="relative min-h-svh">
       <BackgroundMesh />
 
-      {/* Language switcher — top right */}
       <div className="absolute right-4 top-4 z-10 sm:right-6 sm:top-6">
         <LanguageSwitcher locale={locale} />
       </div>
