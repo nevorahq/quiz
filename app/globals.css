@@ -13,8 +13,8 @@
 
 /* Font families — inline so they resolve via next/font CSS vars at runtime */
 @theme inline {
-  --font-display: var(--font-display);
-  --font-body: var(--font-body);
+  --font-display: var(--font-roboto);
+  --font-body: var(--font-roboto);
 }
 
 /* Base */

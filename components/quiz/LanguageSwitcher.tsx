@@ -36,7 +36,7 @@ export default function LanguageSwitcher({ locale }: LanguageSwitcherProps) {
           type="button"
           aria-current={locale === code ? 'true' : undefined}
           onClick={() => switchLocale(code)}
-          className="rounded-full px-3 py-1 text-xs font-semibold transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+          className="cursor-pointer rounded-full px-3 py-1 text-xs font-semibold transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           style={{
             background: locale === code ? 'rgba(255,255,255,0.12)' : 'transparent',
             color: locale === code ? '#F1F5F9' : '#64748B',

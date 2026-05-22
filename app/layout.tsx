@@ -1,18 +1,12 @@
 import type { Metadata } from 'next';
-import { Instrument_Serif, DM_Sans } from 'next/font/google';
+import { Roboto } from 'next/font/google';
 import './globals.css';
 import PostHogProvider from './providers/PostHogProvider';
 
-const instrumentSerif = Instrument_Serif({
-  weight: ['400'],
+const roboto = Roboto({
+  weight: ['400', '500', '700'],
   subsets: ['latin'],
-  variable: '--font-display',
-  display: 'swap',
-});
-
-const dmSans = DM_Sans({
-  subsets: ['latin'],
-  variable: '--font-body',
+  variable: '--font-roboto',
   display: 'swap',
 });
 
@@ -29,7 +23,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${instrumentSerif.variable} ${dmSans.variable} h-full antialiased`}
+      className={`${roboto.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-text-primary font-body">
         <PostHogProvider>{children}</PostHogProvider>
