@@ -24,8 +24,8 @@ function PostHogPageView() {
 }
 
 if (typeof window !== 'undefined') {
-  posthog.init(process.env.POSTHOG_KEY!, {
-    api_host: process.env.POSTHOG_HOST,
+  posthog.init("phc_mC4GDak8ds6JSACbA6ttnEuuet79kaa9gk4eeSoBVMrf", {
+    api_host: "https://eu.i.posthog.com",
     ui_host: 'https://eu.posthog.com',
     capture_pageview: false, // handled manually by PostHogPageView
     capture_pageleave: true,
