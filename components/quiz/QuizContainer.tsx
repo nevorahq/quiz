@@ -11,6 +11,7 @@ import QuizProgress from './QuizProgress'
 import QuizQuestion from './QuizQuestion'
 import QuizTransition from './QuizTransition'
 import { useRouter } from 'next/navigation'
+import { trackQuizSubmitted } from '@/lib/tracking'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -287,6 +288,7 @@ export default function QuizContainer({ locale }: QuizContainerProps) {
   const ph = usePostHog()
   const router = useRouter()
   const msg = getQuizMessages(locale)
+  const submitErrorMsg = msg.result.submit_error
 
   // Refs keep latest values accessible in event handlers / timeouts
   const phaseRef = useRef<Phase>('quiz')
@@ -394,7 +396,7 @@ export default function QuizContainer({ locale }: QuizContainerProps) {
   const handleEmailSubmit = useCallback(
     async (e: React.SubmitEvent, email: string) => {
       e.preventDefault()
-      const normalizedEmail = email.trim()
+      const normalizedEmail = email.trim().toLowerCase()
       if (!normalizedEmail || submitting || !result) return
 
       setSubmitting(true)
@@ -402,7 +404,7 @@ export default function QuizContainer({ locale }: QuizContainerProps) {
       setSubmitSuccess(false)
 
       try {
-        ph?.capture('quiz_submitted', {
+        trackQuizSubmitted(ph, {
           email: normalizedEmail,
           score: result.score,
           profile: result.profile,
@@ -411,12 +413,12 @@ export default function QuizContainer({ locale }: QuizContainerProps) {
         setSubmitSuccess(true)
         setTimeout(() => router.push('/'), 1500)
       } catch {
-        setSubmitError('Network error. Please check your connection and try again.')
+        setSubmitError(submitErrorMsg)
       } finally {
         setSubmitting(false)
       }
     },
-    [submitting, result, locale, ph, router],
+    [submitting, result, locale, ph, router, submitErrorMsg],
   )
 
   // ── Loading skeleton ───────────────────────────────────────────────────

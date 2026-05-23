@@ -28,7 +28,7 @@ if (typeof window !== 'undefined') {
     api_host: "https://eu.i.posthog.com",
     ui_host: 'https://eu.posthog.com',
     capture_pageview: false, // handled manually by PostHogPageView
-    capture_pageleave: true,
+    capture_pageleave: false,
     persistence: 'localStorage+cookie',
   })
 }

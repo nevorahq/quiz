@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { usePostHog } from 'posthog-js/react'
 import { PainProfile } from '@/types/quiz'
 import { getQuizMessages } from '@/lib/getQuizMessages'
+import { trackQuizSubmitted } from '@/lib/tracking'
 
 interface ResultWaitlistFormProps {
   locale: string
@@ -22,12 +23,12 @@ export default function ResultWaitlistForm({ locale, profile, score }: ResultWai
 
   async function handleSubmit(e: React.SubmitEvent) {
     e.preventDefault()
-    const normalizedEmail = email.trim()
+    const normalizedEmail = email.trim().toLowerCase()
     if (!normalizedEmail || submitting) return
 
     setSubmitting(true)
     try {
-      ph?.capture('quiz_submitted', {
+      trackQuizSubmitted(ph, {
         email: normalizedEmail,
         score,
         profile,

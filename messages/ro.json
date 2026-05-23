@@ -148,7 +148,8 @@
     "success_title": "Ești pe listă!",
     "success_subtitle": "Îți scriem imediat ce deschidem accesul timpuriu.",
     "sending": "Se trimite...",
-    "submit_success": "Mulțumim pentru participarea la sondaj!",
+    "submit_success": "Îți mulțumim pentru participare!",
+    "submit_error": "Ceva nu a mers bine. Încearcă din nou.",
     "profile_descriptions": {
       "under_control": "Abonamentele și termenele tale sunt sub control.",
       "managed_chaos": "Te descurci, dar apar fisuri pe ici, pe colo.",
