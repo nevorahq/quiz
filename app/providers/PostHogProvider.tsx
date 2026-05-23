@@ -40,7 +40,6 @@ export default function PostHogProvider({
 }) {
   return (
     <PHProvider client={posthog}>
-      {/* useSearchParams requires Suspense boundary */}
       <Suspense fallback={null}>
         <PostHogPageView />
       </Suspense>

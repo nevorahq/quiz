@@ -3,13 +3,14 @@
 import { useState, useEffect, useCallback, useRef, useSyncExternalStore } from 'react'
 import { usePostHog } from 'posthog-js/react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { QuizAnswers, PainResult, PainProfile, UtmParams, QuizSubmitPayload } from '@/types/quiz'
+import { QuizAnswers, PainResult, PainProfile, UtmParams } from '@/types/quiz'
 import { questions } from '@/lib/questions'
 import { calculatePainScore } from '@/lib/scoring'
 import { getQuizMessages, t } from '@/lib/getQuizMessages'
 import QuizProgress from './QuizProgress'
 import QuizQuestion from './QuizQuestion'
 import QuizTransition from './QuizTransition'
+import { useRouter } from 'next/navigation'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -77,9 +78,10 @@ interface ResultViewProps {
   onEmailSubmit: (e: React.SubmitEvent, email: string) => Promise<void>
   submitting: boolean
   submitError: string | null
+  submitSuccess: boolean
 }
 
-function ResultView({ result, locale, onEmailSubmit, submitting, submitError }: ResultViewProps) {
+function ResultView({ result, locale, onEmailSubmit, submitting, submitError, submitSuccess }: ResultViewProps) {
   const msg = getQuizMessages(locale)
   const [email, setEmail] = useState('')
   const color = PROFILE_COLOR[result.profile]
@@ -190,12 +192,20 @@ function ResultView({ result, locale, onEmailSubmit, submitting, submitError }: 
             />
             <button
               type="submit"
-              disabled={submitting}
-              className="w-full rounded-xl py-3 text-sm font-semibold text-white transition-all duration-200 disabled:opacity-60"
+              disabled={submitting || submitSuccess}
+              className="w-full rounded-xl py-3 text-sm font-semibold text-white transition-all duration-200 disabled:opacity-60 cursor-pointer disabled:cursor-not-allowed"
               style={{ background: '#6366F1' }}
             >
-              {submitting ? '…' : msg.result.waitlist_cta}
+              {submitting ? msg.result.sending : msg.result.waitlist_cta}
             </button>
+            {submitSuccess && (
+              <p
+                className="text-center text-sm font-medium"
+                style={{ color: '#10B981', fontFamily: 'var(--font-body)' }}
+              >
+                {msg.result.submit_success}
+              </p>
+            )}
             {submitError && (
               <p
                 className="text-center text-xs"
@@ -271,9 +281,11 @@ export default function QuizContainer({ locale }: QuizContainerProps) {
   const [result, setResult] = useState<PainResult | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const [submitSuccess, setSubmitSuccess] = useState(false)
   const isHydrated = useSyncExternalStore(() => () => {}, () => true, () => false)
 
   const ph = usePostHog()
+  const router = useRouter()
   const msg = getQuizMessages(locale)
 
   // Refs keep latest values accessible in event handlers / timeouts
@@ -382,57 +394,29 @@ export default function QuizContainer({ locale }: QuizContainerProps) {
   const handleEmailSubmit = useCallback(
     async (e: React.SubmitEvent, email: string) => {
       e.preventDefault()
-      if (!email.trim() || submitting || !result) return
+      const normalizedEmail = email.trim()
+      if (!normalizedEmail || submitting || !result) return
+
       setSubmitting(true)
       setSubmitError(null)
-
-      const payload: QuizSubmitPayload = {
-        email: email.trim(),
-        answers,
-        answers_count: Object.keys(answers).length,
-        score: result.score,
-        profile: result.profile,
-        insights: result.insights,
-        language: locale,
-        pathname: window.location.pathname,
-        timestamp: new Date().toISOString(),
-        ...utmRef.current,
-      }
-
-      console.log('[quiz/submit] payload', payload)
+      setSubmitSuccess(false)
 
       try {
-        const res = await fetch('/api/quiz/submit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
+        ph?.capture('quiz_submitted', {
+          email: normalizedEmail,
+          score: result.score,
+          profile: result.profile,
+          language: locale,
         })
-
-        if (res.ok) {
-          ph?.capture('quiz_submitted', {
-            answers: payload.answers,
-            answers_count: payload.answers_count,
-            score: payload.score,
-            profile: payload.profile,
-            insights: payload.insights,
-            language: payload.language,
-            pathname: payload.pathname,
-            timestamp: payload.timestamp,
-            ...utmRef.current,
-          })
-          setSubmitting(false)
-          setPhase('done')
-        } else {
-          const json = await res.json().catch(() => ({}))
-          setSubmitError((json as { error?: string }).error ?? 'Something went wrong. Please try again.')
-          setSubmitting(false)
-        }
+        setSubmitSuccess(true)
+        setTimeout(() => router.push('/'), 1500)
       } catch {
         setSubmitError('Network error. Please check your connection and try again.')
+      } finally {
         setSubmitting(false)
       }
     },
-    [submitting, result, answers, locale, ph],
+    [submitting, result, locale, ph, router],
   )
 
   // ── Loading skeleton ───────────────────────────────────────────────────
@@ -457,6 +441,7 @@ export default function QuizContainer({ locale }: QuizContainerProps) {
         onEmailSubmit={handleEmailSubmit}
         submitting={submitting}
         submitError={submitError}
+        submitSuccess={submitSuccess}
       />
     )
   }

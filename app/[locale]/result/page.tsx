@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation'
-import { getQuizMessages, t, QuizMessages } from '@/lib/getQuizMessages'
+import { getQuizMessages, t } from '@/lib/getQuizMessages'
 import { PainProfile } from '@/types/quiz'
 import BackgroundMesh from '@/components/quiz/BackgroundMesh'
 import LanguageSwitcher from '@/components/quiz/LanguageSwitcher'

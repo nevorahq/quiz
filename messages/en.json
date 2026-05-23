@@ -147,6 +147,8 @@
     "waitlist_note": "No spam. We'll reach out when we're ready.",
     "success_title": "You're in!",
     "success_subtitle": "We'll let you know as soon as early access opens.",
+    "sending": "Sending...",
+    "submit_success": "Thank you for participating in the survey!",
     "profile_descriptions": {
       "under_control": "Your subscriptions and deadlines are in good shape.",
       "managed_chaos": "You're juggling things, but cracks are starting to show.",
